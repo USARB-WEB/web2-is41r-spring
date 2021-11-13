@@ -16,29 +16,34 @@ public class CountriesRepository {
         return this.countries.toString();
     }
 
-    public String read(int id){
+    public String read(Integer id){
         try{
-            return this.countries.get(id).toString();
+            return (this.countries.stream().filter(element -> id.equals(element.getId())).findFirst().orElse(null)).toString();
         } catch (Exception e){
-            return e.toString();
+            return "Resource not found";
         }
     }
 
-    public String update(int id, Country country){
+    public String update(Integer id, Country country){
         try {
-            this.countries.set(id, country);
+            Country countryFounded = this.countries.stream().filter(element -> id.equals(element.getId())).findFirst().orElse(null);
+            countryFounded.setName(country.getName());
+            countryFounded.setArea(country.getArea());
             return "Updated";
         } catch (Exception e) {
-            return e.toString();
+            return "Resource not found";
         }
     }
 
-    public String delete(int id){
+    public String delete(Integer id){
         try {
-            this.countries.remove(id);
-            return "Deleted";
+            Country country = this.countries.stream().filter(element -> id.equals(element.getId())).findFirst().orElse(null);
+            if(country == null){
+                return "Resource not found";            }
+            this.countries.remove(country);
+            return "Country deleted";
         } catch (Exception e){
-            return e.toString();
+            return "Resource not found";
         }
     }
 }
