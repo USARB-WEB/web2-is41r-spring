@@ -24,19 +24,31 @@ public class CountriesController {
 
     @GetMapping("countries/{id}")
     public String read(@PathVariable int id){
-        return this.countries.get(id).toString();
+        try{
+            return this.countries.get(id).toString();
+        } catch (Exception e){
+            return e.toString();
+        }
     }
 
     @PutMapping("countries/{id}")
     public String update(@PathVariable int id, @RequestParam String name){
-        Country country = new Country(name);
-        this.countries.set(id, country);
-        return "Updated";
+        try {
+            Country country = new Country(name);
+            this.countries.set(id, country);
+            return "Updated";
+        } catch (Exception e) {
+            return e.toString();
+        }
     }
 
     @DeleteMapping("countries/{id}")
     public String delete(@PathVariable int id){
-        this.countries.remove(id);
-        return "Deleted";
+        try {
+            this.countries.remove(id);
+            return "Deleted";
+        } catch (Exception e){
+            return e.toString();
+        }
     }
 }
