@@ -1,5 +1,6 @@
 package com.example.web2is41rspring.controller;
 
+import com.example.web2is41rspring.model.Country;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -7,11 +8,12 @@ import java.util.ArrayList;
 @RestController
 public class CountriesController {
 
-    ArrayList<String> countries = new ArrayList<>();
+    ArrayList<Country> countries = new ArrayList<>();
 
     @PostMapping("countries")
     public String create(@RequestParam String name){
-        this.countries.add(name);
+        Country country = new Country(name);
+        this.countries.add(country);
         return "Created";
     }
 
@@ -20,9 +22,15 @@ public class CountriesController {
         return this.countries.toString();
     }
 
+    @GetMapping("countries/{id}")
+    public String read(@PathVariable int id){
+        return this.countries.get(id).toString();
+    }
+
     @PutMapping("countries/{id}")
     public String update(@PathVariable int id, @RequestParam String name){
-        this.countries.set(id, name);
+        Country country = new Country(name);
+        this.countries.set(id, country);
         return "Updated";
     }
 
