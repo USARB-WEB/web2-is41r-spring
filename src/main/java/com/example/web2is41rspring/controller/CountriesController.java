@@ -1,6 +1,7 @@
 package com.example.web2is41rspring.controller;
 
 import com.example.web2is41rspring.model.Country;
+import com.example.web2is41rspring.repository.CountriesRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -8,47 +9,30 @@ import java.util.ArrayList;
 @RestController
 public class CountriesController {
 
-    ArrayList<Country> countries = new ArrayList<>();
+    CountriesRepository countriesRepository = new CountriesRepository();
 
     @PostMapping("countries")
-    public String create(@RequestParam String name){
-        Country country = new Country(name);
-        this.countries.add(country);
-        return "Created";
+    public String create(@RequestBody Country country){
+        return this.countriesRepository.create(country);
     }
 
     @GetMapping("countries")
     public String read(){
-        return this.countries.toString();
+        return this.countriesRepository.read();
     }
 
     @GetMapping("countries/{id}")
     public String read(@PathVariable int id){
-        try{
-            return this.countries.get(id).toString();
-        } catch (Exception e){
-            return e.toString();
-        }
+        return this.countriesRepository.read(id);
     }
 
     @PutMapping("countries/{id}")
-    public String update(@PathVariable int id, @RequestParam String name){
-        try {
-            Country country = new Country(name);
-            this.countries.set(id, country);
-            return "Updated";
-        } catch (Exception e) {
-            return e.toString();
-        }
+    public String update(@PathVariable int id, @RequestBody Country country){
+        return this.countriesRepository.update(id, country);
     }
 
     @DeleteMapping("countries/{id}")
     public String delete(@PathVariable int id){
-        try {
-            this.countries.remove(id);
-            return "Deleted";
-        } catch (Exception e){
-            return e.toString();
-        }
+        return this.countriesRepository.delete(id);
     }
 }
